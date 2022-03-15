@@ -1,0 +1,28 @@
+# Example nginx config to serve editor
+upstream websocket-server-backend {
+   server 127.0.01:9000;
+}
+server {
+    servername   mydomain.com
+    listen [::]:443 ssl;
+    listen 443 ssl;
+    ssl_certificate  /path/to/keychain.pem;
+    ssl_certificate_key  /path/to/private.pem;
+
+    # OR
+    # listen [::]:80 http;
+    # listen 80 http;
+
+
+    root  /var/www/frontend_client_build_dist;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    location /ws {
+        # serve websocket over mydomain.com/ws
+        proxy_pass http://websocket-server-backend
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+    }
+}

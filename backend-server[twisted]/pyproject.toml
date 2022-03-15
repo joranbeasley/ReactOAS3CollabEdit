@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "oas3_collab_websocketserver"
+version = "0.1.0"
+description = "a webserver for node package `@joranbeasley/oas3-shared-editor-client`"
+authors = ["Joran Beasley <joranbeasley@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7.1"
+Twisted = "^22.2.0"
+autobahn = {extras = ["twisted"], version = "^22.2.2"}
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
