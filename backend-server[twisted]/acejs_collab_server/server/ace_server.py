@@ -22,6 +22,7 @@ from acejs_collab_server.server.base_server import UserRoom
 
 from acejs_collab_server.server.base_server import EventDrivenProtocol, listen_for
 from acejs_collab_server.server.utils import googleLogin
+from acejs_collab_server.server.verify_tokens import verify_github_token
 from acejs_collab_server.server.yaml_editor_room import Rooms,EditorRoom
 
 class GoogleAuthenticatedRoomProtocol(EventDrivenProtocol):
@@ -37,6 +38,9 @@ class GoogleAuthenticatedRoomProtocol(EventDrivenProtocol):
     def doAuthorize(self, request):
         room = request.params.get("room", [None])[0]
         user = request.params.get("user", [None])[0]
+        data1=verify_github_token(user)
+
+        raise Exception("GOT RESULT!",data1)
         # token = request.params.get("tok", [None])[0]
         # try:
         #     room, tokenID = base64.b64decode(token).decode().split(":")

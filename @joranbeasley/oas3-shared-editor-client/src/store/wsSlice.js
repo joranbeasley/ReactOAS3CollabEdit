@@ -1,26 +1,39 @@
 import {createSlice} from "@reduxjs/toolkit";
-import yamljs from "yamljs"
+// import yamljs from "yamljs"
+import {ws} from "../util/ws";
 
 const editorSlice = createSlice({
   name:'wsSlice',
   initialState:{
-    CONNECTED:false,
-    CONNECTING:false
+    readyState:0,
+    connectionError:null,
+    url:null,
   },
   reducers:{
-    beginConnection(state){
-      state.CONNECTING = true
+    beginConnection(state,payload){
+      state.url = payload
+      state.readyState =  WebSocket.CONNECTING
     },
     finishConnection(state){
-      state.CONNECTED = true
-      state.CONNECTING = false
+      state.readyState = WebSocket.OPEN
     },
-    connectionClosed(state){
-      state.CONNECTED = false
-      state.CONNECTING = false
+    connectionClosed(state,reason=null){
+      state.readyState = WebSocket.CLOSED
+      state.connectionError = reason
     }
   }
 })
-
+export function wsLogin(url) {
+  // fetchTodoByIdThunk is the "thunk function"
+  return async function wsLoginThunk(dispatch, getState) {
+    dispatch(beginConnection())
+    ws.connect_ws(getState).then(()=>{
+      dispatch(finishConnection())
+      ws.once("close",reason=>{
+        dispatch(connectionClosed(reason))
+      })
+    })
+  }
+}
 export const {beginConnection,finishConnection,connectionClosed} = editorSlice.actions
 export default editorSlice.reducer

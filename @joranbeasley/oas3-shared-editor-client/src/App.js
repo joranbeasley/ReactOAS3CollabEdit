@@ -12,8 +12,8 @@ import "@convergencelabs/ace-collab-ext/dist/css/ace-collab-ext.css"
 const [room, user] = document.location.pathname.substr(1).split("/", 2)
 function App() {
   return (
-    // <LoginPage />
-    <EditorPage room={room} user={user}/>
+    <LoginPage />
+    // <EditorPage room={room} user={user}/>
   );
 }
 

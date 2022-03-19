@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import yamljs from "yamljs"
+// import yamljs from "yamljs"
 
 const editorSlice = createSlice({
   name:'editorSlice',
@@ -24,11 +24,11 @@ const editorSlice = createSlice({
     setYaml(state,payload){
       console.log("SET YAML:",payload)
       state.yaml = payload?.payload
-      try{
-        state.json = yamljs.parse(state.yaml)
-      }catch (e){
-        state.parseError = e
-      }
+      // try{
+      //   state.json = yamljs.parse(state.yaml)
+      // }catch (e){
+      //   state.parseError = e
+      // }
     }
   }
 })

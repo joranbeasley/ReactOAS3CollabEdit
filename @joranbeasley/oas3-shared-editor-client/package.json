@@ -2,6 +2,7 @@
   "name": "oas3-shared-editor-client",
   "version": "0.1.0",
   "private": true,
+  "NodeVersion": "^16.0.0",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.0.3",
     "@convergencelabs/ace-collab-ext": "^0.6.0",
@@ -29,6 +30,15 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/node-logger": "^6.4.19",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
     "saas": "^1.0.0"
   },
   "scripts": {
@@ -37,7 +47,7 @@
     "postbuild": "python postbuild.py",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "start-storybook -p 3000 -s public",
     "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
@@ -46,6 +56,14 @@
       "react-app/jest"
     ],
     "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      },
       {
         "files": [
           "**/*.stories.*"
