@@ -42,7 +42,7 @@ const useSpec = () => {
   }]
 }
 
-const AceEditorSplitPage = ({room, user}) => {
+const AceEditorSplitPage = ({room, user,value, onChange,onCursorMove,onEditor}) => {
   const [editor, setEditor] = React.useState()
   const {parseError,current_user,current_room} = useSelector(state => state?.editor ?? {})
   const dispatch = useDispatch()
@@ -62,35 +62,35 @@ const AceEditorSplitPage = ({room, user}) => {
       }]);
     }
   }, [parseError])
-  const onEditor = (editor) => {
-    if(!editor){
-      console.log("HMMM NO EDITOR??")
-      return
-    }
-    console.log('EEEEEE:"',editor)
-    editor.editor.setValue("# ... Loading From Server")
-    setEditor(editor)
-    const bridge = wsBridge.initializeEditor(editor, dispatch)
-    dispatch(beginConnection())
-    ws.connect_ws(`${WSS}?room=${room}&user=${user}`).then(
-      () => dispatch(finishConnection())
-    )
-    ws.on("close", () => dispatch(connectionClosed()))
-  }
+  // const _onEditor = (editor) => {
+  //   if(!editor){
+  //     console.log("HMMM NO EDITOR??")
+  //     return
+  //   }
+  //   console.log('EEEEEE:"',editor)
+  //   editor.editor.setValue("# ... Loading From Server")
+  //   setEditor(editor)
+  //   const bridge = wsBridge.initializeEditor(editor, dispatch)
+  //   dispatch(beginConnection())
+  //   ws.connect_ws(`${WSS}?room=${room}&user=${user}`).then(
+  //     () => dispatch(finishConnection())
+  //   )
+  //   ws.on("close", () => dispatch(connectionClosed()))
+  // }
   return <SplitPanelDiv>
     <AceEditor
       mode={"yaml"}
       theme={"tomorrow_night_eighties"}
-      onEditor={onEditor}
+      {...{value,onEditor,onChange,onCursorMove}}
     />
-    <SwaggerUIView/>
+    <SwaggerUIView value={value}/>
   </SplitPanelDiv>
 }
-export function EditorPage({room,user}){
+export function EditorPage({room,user,value,onChange,onCursorMove}){
   return (<div>
     <AppBar />
     <div style={{display:"block",top:'30px',bottom:0,left:0,right:0,position:'absolute'}}>
-      <AceEditorSplitPage room={room} user={user}/>
+      <AceEditorSplitPage {...{room, user,value,onChange,onCursorMove}}/>
       {/*<AceEditorWS mode={"ace/mode/yaml"} theme={"ace/theme/tomorrow_night_eighties"}/>*/}
     </div>
 
