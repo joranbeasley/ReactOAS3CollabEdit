@@ -2,7 +2,8 @@
 # You HAVE to add the rule here to enable it, only configuring (such as below)
 # does NOT enable it.
 contrib=contrib-title-conventional-commits
-
+[title-must-not-contain-word]
+words=
 
 [contrib-title-conventional-commits]
 # Specify allowed commit types. For details see: https://www.conventionalcommits.org/
