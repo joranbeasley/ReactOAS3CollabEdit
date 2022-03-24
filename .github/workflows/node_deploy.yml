@@ -5,10 +5,12 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+defaults:
+  run:
+    working-directory: scripts
+    shell: bash
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,11 +27,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          node_modules
-          */*/node_modules
+          @joranbeasley/oas3-shared-editor-client/node_modules
+          @joranbeasley/oas3-shared-editor-client/*/*/node_modules
         key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
     - name: Change To FE directory
-      run: cd @joranbeasley/oas3-shared-editor-client
+      run: pwd
     - name: Install dependencies
       run: npm install
     - name: Run build task
