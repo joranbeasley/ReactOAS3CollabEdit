@@ -32,7 +32,7 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
     - name: Change To FE directory
       run: pwd
-    - name: Install dependencies
+    - name: Install dependencies --omit dev
       run: npm install
     - name: Run build task
       run: npm run build

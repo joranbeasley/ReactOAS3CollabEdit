@@ -27,7 +27,8 @@
     "react-redux-toastr": "^7.6.8",
     "react-scripts": "3.0.1",
     "swagger-ui-react": "3.24.3",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "saas": "^1.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.17.3",
@@ -39,7 +40,7 @@
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
-    "saas": "^1.0.0"
+
   },
   "scripts": {
     "start": "react-scripts start",
