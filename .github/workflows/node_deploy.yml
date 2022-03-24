@@ -28,6 +28,8 @@ jobs:
           node_modules
           */*/node_modules
         key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+    - name: Change To FE directory
+      run: cd @joranbeasley/oas3-shared-editor-client
     - name: Install dependencies
       run: npm install
     - name: Run build task
