@@ -5,7 +5,7 @@ import {ws} from "../util/ws";
 const editorSlice = createSlice({
   name:'wsSlice',
   initialState:{
-    readyState:0,
+    readyState:-1,
     connectionError:null,
     url:null,
   },
@@ -23,15 +23,21 @@ const editorSlice = createSlice({
     }
   }
 })
-export function wsLogin(url) {
+export function wsLogin(url,ws_inst) {
   // fetchTodoByIdThunk is the "thunk function"
+  ws_inst = ws_inst ?? ws
   return async function wsLoginThunk(dispatch, getState) {
+
     dispatch(beginConnection())
-    ws.connect_ws(getState).then(()=>{
+    ws_inst.connect_ws(url).then(()=>{
       dispatch(finishConnection())
-      ws.once("close",reason=>{
+      ws_inst.once("close",reason=>{
+        console.log("CLOSE??",reason)
         dispatch(connectionClosed(reason))
       })
+    }).catch((ws_inst2,reason)=>{
+      console.log("CONNECTION ERROR!",ws_inst2)
+      dispatch(connectionClosed(reason))
     })
   }
 }

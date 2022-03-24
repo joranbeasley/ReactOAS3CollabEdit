@@ -12,6 +12,7 @@
     "brace": "^0.11.1",
     "crypto-hash": "^2.0.1",
     "js-sha256": "^0.9.0",
+    "js-yaml": "^4.1.0",
     "nimma": "^0.1.8",
     "oas-linter": "^3.2.2",
     "oas-validator": "^5.0.8",
@@ -26,8 +27,7 @@
     "react-redux-toastr": "^7.6.8",
     "react-scripts": "3.0.1",
     "swagger-ui-react": "3.24.3",
-    "toastr": "^2.1.4",
-    "yamljs": "^0.3.0"
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.17.3",

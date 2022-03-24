@@ -1,18 +1,10 @@
 import React from "react";
 import {AceEditor} from "../components/Editor";
-import yamljs from "yamljs"
-import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css"
 import {SwaggerUIView} from "../components/SwaggerUIView";
-import {ws, WSS} from "../util/ws"
-import ace from "brace";
 import {useDispatch, useSelector} from "react-redux";
-import SwaggerParser from "@apidevtools/swagger-parser";
-import {wsBridge} from "../util/EditorWebsocketBridge";
-import {beginConnection, finishConnection, joinRoom, setUsername} from "../store";
-import {connectionClosed} from "../store/wsSlice";
+import {doSetYaml, joinRoom, setUsername} from "../store";
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import ReduxToastr from 'react-redux-toastr'
 import {AppBar} from "../components/AppBar";
 
 export const SplitPanelDiv = ({children}) => {
@@ -29,23 +21,20 @@ export const SplitPanelDiv = ({children}) => {
     </div>
   </div>
 }
-const useSpec = () => {
-  const [state, setState] = React.useState({yaml: '', json: {}})
-  return [state.yaml, state.json, (yaml) => {
-    let json = state.json
-    try {
-      json = yamljs.parse(yaml)
-    } catch (e) {
 
-    }
-    return setState({yaml, json})
-  }]
-}
-
-const AceEditorSplitPage = ({room, user,value, onChange,onCursorMove,onEditor}) => {
-  const [editor, setEditor] = React.useState()
-  const {parseError,current_user,current_room} = useSelector(state => state?.editor ?? {})
+const AceEditorSplitPage = ({room, user,value, onChange,onSelectionChange,onEditor}) => {
   const dispatch = useDispatch()
+  const [editor, setEditor] = React.useState()
+  const changeFunc = React.useMemo(()=>{
+    return (evt,doc)=>{
+      dispatch(doSetYaml(doc.getValue()))
+      if(onChange) {
+        onChange(evt, doc)
+      }
+    }
+  },[onChange,dispatch])
+  const {parseError,current_user,current_room,json} = useSelector(state => state?.editor ?? {})
+
 
   React.useEffect(() => {
     // this ONLY affects the local store ... it does not actually dispatch any kind of message to ws
@@ -62,6 +51,7 @@ const AceEditorSplitPage = ({room, user,value, onChange,onCursorMove,onEditor}) 
       }]);
     }
   }, [parseError])
+
   // const _onEditor = (editor) => {
   //   if(!editor){
   //     console.log("HMMM NO EDITOR??")
@@ -81,16 +71,16 @@ const AceEditorSplitPage = ({room, user,value, onChange,onCursorMove,onEditor}) 
     <AceEditor
       mode={"yaml"}
       theme={"tomorrow_night_eighties"}
-      {...{value,onEditor,onChange,onCursorMove}}
+      {...{value,onEditor,onChange:changeFunc,onSelectionChange}}
     />
-    <SwaggerUIView value={value}/>
+    <SwaggerUIView json={json}/>
   </SplitPanelDiv>
 }
-export function EditorPage({room,user,value,onChange,onCursorMove}){
+export function EditorPage({room,user,value,onChange,onSelectionChange}){
   return (<div>
     <AppBar />
     <div style={{display:"block",top:'30px',bottom:0,left:0,right:0,position:'absolute'}}>
-      <AceEditorSplitPage {...{room, user,value,onChange,onCursorMove}}/>
+      <AceEditorSplitPage {...{room, user,value,onChange,onSelectionChange}}/>
       {/*<AceEditorWS mode={"ace/mode/yaml"} theme={"ace/theme/tomorrow_night_eighties"}/>*/}
     </div>
 

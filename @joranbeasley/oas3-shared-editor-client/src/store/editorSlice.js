@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-// import yamljs from "yamljs"
+import jsyaml from "js-yaml";
 
 const editorSlice = createSlice({
   name:'editorSlice',
@@ -21,17 +21,30 @@ const editorSlice = createSlice({
     setUsers(state,action){
       state.current_users = [...action?.payload]
     },
+    setError(state,payload){
+      state.parseError = payload
+    },
     setYaml(state,payload){
-      console.log("SET YAML:",payload)
       state.yaml = payload?.payload
-      // try{
-      //   state.json = yamljs.parse(state.yaml)
-      // }catch (e){
-      //   state.parseError = e
-      // }
-    }
+    },
+    setJSON(state,payload){
+      state.json = payload?.payload ?? {}
+    },
   }
 })
-
-export const {setYaml,joinRoom,setUsername,setUsers} = editorSlice.actions
+export function doSetYaml(yaml) {
+  // fetchTodoByIdThunk is the "thunk function"
+  return async function setYamlThunk(dispatch, getState) {
+    if(getState().editor.yaml===yaml){return}
+    dispatch(setYaml(yaml))
+    try{
+      const json = jsyaml.load(yaml)
+      dispatch(setJSON(json))
+    }catch (e){
+      const {line:parsedLine, column} = e.mark
+      dispatch(setError({parsedLine,column,message:e.message}))
+    }
+  }
+}
+export const {setYaml,setJSON,joinRoom,setUsername,setUsers,setError} = editorSlice.actions
 export default editorSlice.reducer

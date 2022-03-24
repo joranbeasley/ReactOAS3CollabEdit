@@ -5,14 +5,14 @@ import App from './App';
 import {Provider} from "react-redux";
 import store from "./store"
 import ReduxToastr from "react-redux-toastr";
-
+const ToastrLayer = ()=>(<div style={{position: "absolute", zIndex: 5000}}>
+        <ReduxToastr/>
+      </div>)
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App/>
-      <div style={{position: "absolute", zIndex: 5000}}>
-        <ReduxToastr/>
-      </div>
+      <ToastrLayer />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

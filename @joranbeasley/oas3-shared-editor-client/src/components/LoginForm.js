@@ -18,12 +18,15 @@ export function LoginForm({onSuccess, redirect_uri, google_client_id, github_cli
   if (google_client_id && google_client_id.length > 7) {
     login_buttons.push(<GoogleLogin key="google-btn" clientId={google_client_id}
                                     redirectUri={redirect_uri}
-                                    onSuccess={(r) => onSuccess(r.profileObj)}/>)
+                                    onSuccess={(r) => {
+                                      console.log("GR:",r)
+                                      onSuccess({...r.profileObj,accessToken:r.accessToken, room})
+                                    }}/>)
   }
   if (github_client_id && github_client_id.length > 7) {
     login_buttons.push(<GitHubLogin key={"github-btn"} clientId={github_client_id}
                                     redirectUri={redirect_uri}
-                                    onSuccess={onSuccess}/>)
+                                    onSuccess={r=>onSuccess({...r, room})}/>)
   }
 
   if (login_buttons.length === 0) {

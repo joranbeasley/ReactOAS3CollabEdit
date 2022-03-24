@@ -21,7 +21,8 @@ def verify_github_token(token):
 
 def verify_google_token(token):
     uri = "https://www.googleapis.com/oauth2/v3/userinfo"
-    resp = requests.get(uri, headers={"Authorization": f"Bearer {tokenID}"})
+    resp = requests.get(uri, headers={"Authorization": f"Bearer {token}"})
     user_info = resp.json()
+    print("GOT INFO:",user_info)
     user_info['short_name'] = user_info['given_name'] + ' ' + user_info['family_name'][:1]
     return user_info

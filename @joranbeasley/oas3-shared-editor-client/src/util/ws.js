@@ -16,6 +16,7 @@ export class JSocket{
   }
 
   connect_ws(url,callbacks){
+    console.log("CONNECT:",url)
     Object.keys(callbacks??{}).map(k=>this.emitter.on(k,callbacks[k]))
 
     this.ws = new WebSocket(url)
@@ -32,8 +33,17 @@ export class JSocket{
       this._pending.map(this.ws.send)
       this.emitter.emit("open",this)
     }
-    const p = new Promise(resolve=>{
-      this.once("open",resolve)
+    const p = new Promise((resolve,reject)=>{
+      const onConnect = (...a)=>{
+        resolve(...a)
+        this.off("close",onClose)
+      }
+      const onClose = (...a) =>{
+        reject(...a)
+        this.off("open",onConnect)
+      }
+      this.once("open",onConnect)
+      this.once("close",onClose)
     })
     this.emitter.on("messageJSON",data=>{
       if(data.event ?? data.type){
@@ -41,7 +51,9 @@ export class JSocket{
       }
     })
 
-    this.ws.onclose = ()=>this.emitter.emit("close",this)
+    this.ws.onclose = (reason)=>{
+      this.emitter.emit("close",[this,reason])
+    }
     return p
   }
   sendUTF8(messageUTF8){
