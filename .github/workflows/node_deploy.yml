@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 defaults:
   run:
-    working-directory: scripts
+    working-directory: @joranbeasley/oas3-shared-editor-client
     shell: bash
 jobs:
   build:
