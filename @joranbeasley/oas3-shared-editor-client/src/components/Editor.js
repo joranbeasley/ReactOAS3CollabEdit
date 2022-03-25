@@ -12,25 +12,27 @@ export function AceEditor({mode, value, theme, onEditor, style, onChange, onSele
   React.useEffect(() => {
     const editor = editor_?.editor
     const curMgr = editor_?.curMgr
+    let mmode = mode
+    let mtheme = theme
     if (editor) {
       if (mode && mode.indexOf("/mode/") < 1) {
-        mode = `ace/mode/${mode ?? 'python'}`
+        mmode = `ace/mode/${mode ?? 'python'}`
       }
       if (theme && theme.indexOf("/theme/") < 1) {
-        theme = `ace/theme/${theme ?? 'dracula'}`
+        mtheme = `ace/theme/${theme ?? 'dracula'}`
       }
-      if (editor.getOption('mode') !== mode) {
-        editor.setOption('mode', mode)
+      if (editor.getOption('mode') !== mmode) {
+        editor.setOption('mode', mmode)
       }
-      if (editor.getOption('theme') !== theme) {
-        editor.setOption('theme', theme)
+      if (editor.getOption('theme') !== mtheme) {
+        editor.setOption('theme', mtheme)
       }
       if (!editorSet && onEditor) {
         setEditorSet(true)
         onEditor({editor, curMgr})
       }
     }
-  }, [editor_, mode, theme, onEditor])
+  }, [editor_, mode, theme, onEditor,editorSet])
   React.useEffect(() => {
     if (value !== editor_?.editor?.getValue()) {
       console.log("Update Value?", value)
@@ -40,7 +42,7 @@ export function AceEditor({mode, value, theme, onEditor, style, onChange, onSele
       }
       editor.getSession().getDocument().setValue(value)
     }
-  }, [value])
+  }, [value,editor_])
   React.useEffect(() => {
     console.log("BIND CHANGE")
     if (!editor_) {
@@ -92,15 +94,13 @@ export function AceEditor({mode, value, theme, onEditor, style, onChange, onSele
         style={{display: "block", width: '100%', height: '100%', ...(style ?? {})}}
       />)
       return ele
-    }, []
+    }, [style]
   )
   return AceEditorMemo
 }
 
 
 export function AceEditorWS({mode, theme}) {
-  const [editor, setEditor] = React.useState()
-
-
+  const [ , setEditor] = React.useState()
   return <AceEditor onEditor={setEditor}/>
 }

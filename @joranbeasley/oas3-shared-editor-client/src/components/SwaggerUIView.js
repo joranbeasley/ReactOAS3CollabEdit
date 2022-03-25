@@ -1,4 +1,3 @@
-import {useSelector} from "react-redux";
 import SwaggerUI from "swagger-ui-react";
 import React from "react";
 import jsyaml from "js-yaml"

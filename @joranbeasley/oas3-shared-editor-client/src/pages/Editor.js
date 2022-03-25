@@ -24,7 +24,7 @@ export const SplitPanelDiv = ({children}) => {
 
 const AceEditorSplitPage = ({room, user,value, onChange,onSelectionChange,onEditor}) => {
   const dispatch = useDispatch()
-  const [editor, setEditor] = React.useState()
+  const [editor, ] = React.useState()
   const changeFunc = React.useMemo(()=>{
     return (evt,doc)=>{
       dispatch(doSetYaml(doc.getValue()))
@@ -33,14 +33,14 @@ const AceEditorSplitPage = ({room, user,value, onChange,onSelectionChange,onEdit
       }
     }
   },[onChange,dispatch])
-  const {parseError,current_user,current_room,json} = useSelector(state => state?.editor ?? {})
+  const {parseError,json} = useSelector(state => state?.editor ?? {})
 
 
   React.useEffect(() => {
     // this ONLY affects the local store ... it does not actually dispatch any kind of message to ws
     dispatch(joinRoom(room))
     dispatch(setUsername(user))
-  }, [room,user])
+  }, [room,user, dispatch])
   React.useEffect(() => {
     if (parseError && editor) {
       editor.editor.getSession().setAnnotations([{
@@ -50,7 +50,7 @@ const AceEditorSplitPage = ({room, user,value, onChange,onSelectionChange,onEdit
         type: "error" // also "warning" and "information"
       }]);
     }
-  }, [parseError])
+  }, [parseError,editor])
 
   // const _onEditor = (editor) => {
   //   if(!editor){
