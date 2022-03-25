@@ -19,8 +19,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: BLARGGG
-      run: echo ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} && exit 1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -43,6 +41,7 @@ jobs:
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
+        port: ${{ secrets.REMOTE_PORT }}
         key: ${{ secrets.REMOTE_KEY }}
         source: "@joranbeasley/oas3-shared-editor-client/build/*"
         target: ${{ secrets.REMOTE_TARGET }}
