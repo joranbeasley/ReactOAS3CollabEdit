@@ -43,7 +43,8 @@
 
   },
   "resolutions": {
-    "babel-loader": "8.0.5"
+    "babel-loader": "8.0.5",
+    "webpack": "4.29.6"
   },
   "scripts": {
     "start": "react-scripts start",
