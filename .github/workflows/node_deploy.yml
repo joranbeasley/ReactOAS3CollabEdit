@@ -35,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: npm install -g yarn && yarn
     - name: Create ENV
-      run: printf "${{ secrets.PRODUCTION_ENV }}" > ./.env.production
+      run: printf "REACT_APP_WSS=${{ secrets.WS_HOST }}\nREACT_APP_GOOGLE_CLIENT_ID=${{ secrets.GH_CLIENTID }}\nSKIP_PREFLIGHT_CHECK=true\n" > ./.env.production
     - name: Run build task
       run: yarn build && cp ./.env.production ./build/.env.production
     - name: Copy via SSH
