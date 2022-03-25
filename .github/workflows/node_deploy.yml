@@ -42,5 +42,5 @@ jobs:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.REMOTE_KEY }}
-        source: "build/*"
+        source: "@joranbeasley/oas3-shared-editor-client/build/*"
         target: ${{ secrets.REMOTE_TARGET }}
