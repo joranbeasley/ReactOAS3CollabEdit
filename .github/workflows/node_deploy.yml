@@ -34,8 +34,10 @@ jobs:
       run: pwd
     - name: Install dependencies
       run: npm install -g yarn && yarn
+    - name: Create ENV
+      run: printf ${{ secrets.PRODUCTION_ENV }} > ./.env.production
     - name: Run build task
-      run: yarn build
+      run: yarn build && cp ./.env.production ./build/.env.production
     - name: Copy via SSH
       uses: appleboy/scp-action@master
       with:
