@@ -33,9 +33,9 @@ jobs:
     - name: Change To FE directory
       run: pwd
     - name: Install dependencies
-      run: npm install --omit dev
+      run: npm install -g yarn && yarn
     - name: Run build task
-      run: npm run build
+      run: yarn build
     - name: Copy via SSH
       uses: appleboy/scp-action@master
       with:
