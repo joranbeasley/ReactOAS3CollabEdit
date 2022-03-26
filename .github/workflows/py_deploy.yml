@@ -36,5 +36,5 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.REMOTE_KEY }}
-          source: "backend-server[twisted]/dist"
-          target: "~/"
+          source: "./backend-server[twisted]/dist/*"
+          target: "/home/ci-user"
