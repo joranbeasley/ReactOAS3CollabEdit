@@ -28,7 +28,7 @@ jobs:
       - name: Poetry install
         run: poetry install
       - name: Poetry build
-        run: poetry build
+        run: poetry build && ls dist/* -la
       - name: Copy WHL via SSH
         uses: appleboy/scp-action@master
         with:
