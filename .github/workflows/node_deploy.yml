@@ -48,10 +48,10 @@ jobs:
         source: "@joranbeasley/oas3-shared-editor-client/build/*"
         target: ${{ secrets.REMOTE_TARGET }}
     - name: Run Post Copy Installer
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          port: ${{ secrets.REMOTE_PORT }}
-          key: ${{ secrets.REMOTE_KEY }}
-          script: ${{ secrets.REMOTE_INSTALLER_COMMAND }}
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        port: ${{ secrets.REMOTE_PORT }}
+        key: ${{ secrets.REMOTE_KEY }}
+        script: ${{ secrets.REMOTE_INSTALLER_COMMAND }}
