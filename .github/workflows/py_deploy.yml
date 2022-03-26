@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9]
+        python-version: [3.7.10]
         poetry-version: [1.1.13]
     runs-on: ubuntu-latest
     steps:
@@ -25,5 +25,16 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: View poetry --help
-        run: poetry --help && pwd && ls
+      - name: Poetry install
+        run: poetry install
+      - name: Poetry install
+        run: poetry build
+      - name: Copy WHL via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          key: ${{ secrets.REMOTE_KEY }}
+          source: "backend-server[twisted]"
+          target: "~/"
