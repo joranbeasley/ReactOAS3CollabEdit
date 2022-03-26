@@ -1,0 +1,52 @@
+openapi: 3.0.0
+# servers:
+  # a list of dictionaries with description and url fields
+  # - description: Server Description
+  #  url: https://url.to.server
+info:
+  version: "1.0.0"
+  title: home-iot-api
+  description: The API for the EatBacon IOT project
+paths:
+  /Object:
+      get:
+        tags:
+          - Object
+        description: returns all registered Object
+        operationId: getObjects
+        parameters:
+          - in: query
+            name: skip
+            description: number of records to skip
+            schema:
+              type: integer
+              format: int32
+          - in: query
+            name: limit
+            description: max number of records to return
+            schema:
+              type: integer
+              format: int32
+        responses:
+          '200':
+            description: All the Objects
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ObjectType'
+components:
+    schemas:
+      ObjectType:
+        type: object
+        properties:
+          zones:
+            type: array
+            items:
+              type: string
+            example: [{"id":"1eF32j7"},...]
+          zoneStatus:
+            type: string
+            example: "OK"
+        description: ok
