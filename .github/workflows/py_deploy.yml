@@ -27,7 +27,7 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Poetry install
         run: poetry install
-      - name: Poetry install
+      - name: Poetry build
         run: poetry build
       - name: Copy WHL via SSH
         uses: appleboy/scp-action@master
@@ -36,5 +36,5 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.REMOTE_KEY }}
-          source: "backend-server[twisted]"
+          source: "backend-server[twisted]/dist/*"
           target: "~/"
