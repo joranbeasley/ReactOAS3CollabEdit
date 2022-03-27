@@ -151,4 +151,4 @@ if __name__ == "__main__":
     args = sys.argv
     if len(args) and "__main__" in args[0]:
         args = args[1:]
-    main(['-v'])#args)
+    main(args)
