@@ -73,7 +73,7 @@ def uninstall_app():
         print("Remove:",entry['symlink'])
         os.unlink(entry['symlink'])
 
-def runserver(host_and_port):
+def runserver(host_and_port,**kwargs):
     host,port = None,None
     try:
         host,port = host_and_port.split(":",1)
@@ -133,7 +133,7 @@ def main(args=None):
     install_cmd.add_argument("--port", default="9090",help="the port to serve on",type=int)
 
     run_cmd = parsers.add_parser("runserver", help="run the websocket server")
-    run_cmd.add_argument("host_and_port",default="127.0.0.1:9090")
+    run_cmd.add_argument("host_and_port",required=False,default="127.0.0.1:9090")
     run_cmd.set_defaults(func=runserver)
     stop_cmd = parsers.add_parser("stop", help="stops the service")
     stop_cmd.set_defaults(func=stop_cmd)
