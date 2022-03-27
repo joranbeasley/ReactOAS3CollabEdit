@@ -170,7 +170,7 @@ python-versions = ">=3.5"
 name = "importlib-metadata"
 version = "4.11.3"
 description = "Read metadata from Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -364,7 +364,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 name = "zipp"
 version = "3.7.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -388,7 +388,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "c3f0893e05ec2f885e50d99ac234658babcdb34136b19b6f9a77952165ac2fbe"
+content-hash = "4451bf62bfb0d7e872687fcd6400514adae889286002bc4d25fb05dcc9abe015"
 
 [metadata.files]
 attrs = [

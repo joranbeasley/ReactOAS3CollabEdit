@@ -12,6 +12,7 @@ Twisted = "^22.2.0"
 autobahn = {extras = ["twisted"], version = "^22.2.2"}
 requests = "^2.27.1"
 sentry-sdk = "^1.5.8"
+importlib-metadata = "^4.11.3"
 
 [tool.poetry.dev-dependencies]
 bumpver = "^2022.1116"
