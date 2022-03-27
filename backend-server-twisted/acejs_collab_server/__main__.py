@@ -42,7 +42,7 @@ def filter_symlinks_in_folder(target,folder=".",maxDepth=1):
             yield {"symlink":symlink,"realfile":realfile}
 
 
-def install_app(name,host,port):
+def install_app(name,host,port,**kwargs):
     print(f"Install websocket server as {name}")
     base_path = "/etc/ws_service_files"
     socket_path = os.path.join(base_path, "websocket_server@.socket")
