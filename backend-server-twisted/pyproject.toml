@@ -10,6 +10,7 @@ packages = [{include = "acejs_collab_server"}]
 python = "^3.7.1"
 Twisted = "^22.2.0"
 autobahn = {extras = ["twisted"], version = "^22.2.2"}
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 bumpver = "^2022.1116"
