@@ -96,7 +96,7 @@ def start_cmd(**args):
     os.popen('systemctl start ')
 
 def print_version_cmd(*a,**args):
-    from __version__ import __version__,__name__
+    from acejs_collab_server.__version__ import __version__,__name__
     print(__name__," : ver ",__version__)
     exit(0)
 
