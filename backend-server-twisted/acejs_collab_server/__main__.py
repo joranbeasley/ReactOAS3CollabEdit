@@ -133,7 +133,7 @@ def main(args=None):
     install_cmd.add_argument("--port", default="9090",help="the port to serve on",type=int)
 
     run_cmd = parsers.add_parser("runserver", help="run the websocket server")
-    run_cmd.add_argument("host_and_port",required=False,default="127.0.0.1:9090")
+    run_cmd.add_argument("host_and_port",nargs="?",default="127.0.0.1:9090")
     run_cmd.set_defaults(func=runserver)
     stop_cmd = parsers.add_parser("stop", help="stops the service")
     stop_cmd.set_defaults(func=stop_cmd)
