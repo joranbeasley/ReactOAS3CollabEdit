@@ -31,6 +31,7 @@ ExecReload=/bin/kill -HUP $MAINPID
 WantedBy=multi-user.target
 '''
 SERVICE_NAME="websocket_server@"
+
 def find_symlinks_in_folder(folder=".", maxDepth=1):
     cmd = f"""find "{folder}" -maxdepth {maxDepth} -type l -exec readlink -nf {{}} ';' -exec echo " -> {{}}" ';'"""
     result = os.popen(cmd).read()
@@ -42,8 +43,9 @@ def filter_symlinks_in_folder(target,folder=".",maxDepth=1):
             yield {"symlink":symlink,"realfile":realfile}
 
 
-def install_app(name,host,port,**kwargs):
+def install_app(name,host_and_port,**kwargs):
     print(f"Install websocket server as {name}")
+    host,port = parse_host_and_port_or_exit(host_and_port)
     base_path = "/etc/ws_service_files"
     socket_path = os.path.join(base_path, "websocket_server@.socket")
     server_path = os.path.join(base_path, "websocket_server@.service")
@@ -61,7 +63,8 @@ def install_app(name,host,port,**kwargs):
         f.write(WS_SOCKET_SERVICEFILE_SERVER.format(host=host,port=port))
     log.debug("UPDATED SERVICE FILES, CHECK FOR EXISTING SERVICE INSTALLS")
     os.popen(f"systemctl link {base_path}/*")
-    os.popen(f"ststemctl enable {SERVICE_NAME}{{0}}")
+    os.popen(f"systemctl enable {SERVICE_NAME}{{0}}")
+    os.popen(f"systemctl start {SERVICE_NAME}{{0}}")
 
 
 def uninstall_app():
@@ -72,27 +75,34 @@ def uninstall_app():
         os.popen(f"systemctl disable {os.path.basename(entry['symlink'])}")
         print("Remove:",entry['symlink'])
         os.unlink(entry['symlink'])
-
-def runserver(host_and_port,**kwargs):
-    host,port = None,None
+def parse_host_and_port_or_exit(host_and_port):
     try:
-        host,port = host_and_port.split(":",1)
-    except:
-        print(f"Invalid host and port specification '{host_and_port}' expected something like 127.0.0.1:9000")
+        return _parse_host_and_port(host_and_port)
+    except Exception as e:
+        print(str(e))
         exit(1)
+
+def _parse_host_and_port(host_and_port):
+    host, port = None, None
+    try:
+        host, port = host_and_port.split(":", 1)
+    except:
+        raise ValueError(f"Invalid host and port specification '{host_and_port}' expected something like 127.0.0.1:9000")
     try:
         port = int(port)
     except:
-        print(f"Invalid PORT: {port}, expected an integer")
-        exit(1)
+        raise TypeError(f"Invalid PORT: {port}, expected an integer")
+    return host,port
+def runserver(host_and_port,**kwargs):
+    host,port = parse_host_and_port_or_exit(host_and_port)
     print(f"Serving Websocket Server on {host_and_port}")
     from acejs_collab_server.server.ace_server import start_server
     start_server(host,port)
 
-def stop_cmd(**args):
+def stop_command(**args):
     print("STOP SERVER:",args)
 
-def start_cmd(**args):
+def start_command(**args):
     os.popen('systemctl start ')
 
 def print_version_cmd(*a,**args):
@@ -100,16 +110,27 @@ def print_version_cmd(*a,**args):
     print(__name__," : ver ",__version__)
     exit(0)
 
+def logs_command(follow,num_lines,*a,**kwargs):
+    print("RUN LOGS:",a,kwargs)
+    args = ['journalctl',f'--unit={SERVICE_NAME}{{0}}']
+    if follow:
+        args.append('-f')
+    if num_lines >= 0:
+        args.extend(["-n",str(num_lines)])
+    else:
+        args.extend(['-n','10'])
+    print("CALL:",args)
+    os.execv('/bin/env',args)
 
 class _CBAction(argparse.Action):
     def __init__(self,cb,**kwargs):
         self.cb = cb
         super(_CBAction,self).__init__(**kwargs)
     def __call__(self, parser,ns,args,tok):
-        print("CALL:",parser)
-        print("NS:",ns)
-        print("a:",args)
-        print("tok:",tok)
+        # print("CALL:",parser)
+        # print("NS:",ns)
+        # print("a:",args)
+        # print("tok:",tok)
         return self.cb(*args)
 
 def main(args=None):
@@ -136,11 +157,15 @@ def main(args=None):
     run_cmd.add_argument("host_and_port",nargs="?",default="127.0.0.1:9090")
     run_cmd.set_defaults(func=runserver)
     stop_cmd = parsers.add_parser("stop", help="stops the service")
-    stop_cmd.set_defaults(func=stop_cmd)
+    stop_cmd.set_defaults(func=start_command)
     start_cmd = parsers.add_parser("start", help="starts the service, if stopped")
-    start_cmd.set_defaults(func=start_cmd)
+    start_cmd.set_defaults(func=stop_command)
     uninstall_cmd = parsers.add_parser("uninstall", help="uninstalls the service")
-    uninstall_cmd.set_defaults(func=uninstall_cmd)
+    uninstall_cmd.set_defaults(func=uninstall_app)
+    logs_cmd = parsers.add_parser("logs", help="logs")
+    logs_cmd.add_argument("-f","--follow",help="follow logs",action="store_true")
+    logs_cmd.add_argument("-n","--num_lines",type=int,help="how many lines to tail",default=-1)
+    logs_cmd.set_defaults(func=logs_command)
 
     result = parser.parse_args(args or sys.argv)
     payload = {k:v for k,v in result.__dict__.items() if k != 'func'}
@@ -151,4 +176,4 @@ if __name__ == "__main__":
     args = sys.argv
     if len(args) and "__main__" in args[0]:
         args = args[1:]
-    main(args)
+    main(['logs','-f','-n','20'])#,args)
