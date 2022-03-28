@@ -3,15 +3,10 @@ import './App.css';
 import {EditorPage} from "./pages/Editor";
 import {LoginPage} from "./pages/LoginPage";
 import store, {wsLogin} from "./store";
-import {useDispatch, useSelector} from "react-redux";
 import {
-  Link,
-  MakeGenerics,
-  Outlet,
   ReactLocation,
   Navigate,
-  Router,
-  useMatch,
+  Router
 } from "@tanstack/react-location";
 import "brace/mode/yaml"
 import "brace/theme/tomorrow_night_eighties"
@@ -73,19 +68,5 @@ function AppRouted() {
   />)
 }
 
-function App() {
-  const dispatch = useDispatch()
-  const readyState = useSelector(state => state.ws.readyState)
-  const component = readyState === WebSocket.OPEN
-    ? <EditorPage/>
-    : <LoginPage
-      google_client_id={token}
-      onSuccess={info => {
-        const uri = `ws://localhost:9000/?user=${info.accessToken}&room=${info.room}`
-        dispatch(wsLogin(uri))
-      }
-      }/>
-  return component;
-}
 
 export default AppRouted;

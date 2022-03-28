@@ -1,5 +1,5 @@
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {StatusLight} from "./Light";
 import {FaEdit, FaSave} from "react-icons/fa";
 // import {setUsername} from "../store";
@@ -28,8 +28,8 @@ function useAppBarSelector(){
     user:state.editor.current_user,
     room:state.editor.current_room,
     users:state.editor.current_users,
-    connecting:state.ws.readyState == WebSocket.CONNECTING,
-    connected:state.ws.readyState == WebSocket.OPEN,
+    connecting:state.ws.readyState === WebSocket.CONNECTING,
+    connected:state.ws.readyState === WebSocket.OPEN,
   }))
 }
 function EditableText({value,onChange,onSave, style, editable=true}){
