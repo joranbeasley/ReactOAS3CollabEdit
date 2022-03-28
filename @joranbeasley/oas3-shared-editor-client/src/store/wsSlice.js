@@ -1,8 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
 // import yamljs from "yamljs"
 import {ws} from "../util/ws";
+import {doJoinRoomAndRedirect, doSetYaml,  updateRoom} from "./editorSlice";
 
-const editorSlice = createSlice({
+const wsSlice = createSlice({
   name:'wsSlice',
   initialState:{
     readyState:-1,
@@ -16,20 +17,38 @@ const editorSlice = createSlice({
     },
     finishConnection(state){
       state.readyState = WebSocket.OPEN
+      console.log("READY STATE UPDATED:",state.readyState)
     },
     connectionClosed(state,reason=null){
       state.readyState = WebSocket.CLOSED
       state.connectionError = reason
+    },
+    connectionFail(state){
+      state.readyState = WebSocket.CLOSED
+      state.connectionError = "Connection.FAIL"
     }
   }
 })
+
 export function wsLogin(url,ws_inst) {
   // fetchTodoByIdThunk is the "thunk function"
   ws_inst = ws_inst ?? ws
   return async function wsLoginThunk(dispatch, getState) {
-
     dispatch(beginConnection())
+    ws_inst.once("WELCOME",payload=>{
+      console.log("GOT WELCOME:",payload)
+      dispatch(doJoinRoomAndRedirect(payload))
+      dispatch(doSetYaml(payload.room.content))
+      // dispatch()
+    })
+    ws_inst.on("USER_JOINED",payload=>{
+      dispatch(updateRoom({room:payload.room}))
+    })
+    ws_inst.on("USER_LEFT",payload=>{
+      dispatch(updateRoom({room:payload.room}))
+    })
     ws_inst.connect_ws(url).then(()=>{
+      console.log("Update Connection OPEN!")
       dispatch(finishConnection())
       ws_inst.once("close",reason=>{
         console.log("CLOSE??",reason)
@@ -37,9 +56,9 @@ export function wsLogin(url,ws_inst) {
       })
     }).catch((ws_inst2,reason)=>{
       console.log("CONNECTION ERROR!",ws_inst2)
-      dispatch(connectionClosed(reason))
+      dispatch(wsSlice.actions.connectionFail())
     })
   }
 }
-export const {beginConnection,finishConnection,connectionClosed} = editorSlice.actions
-export default editorSlice.reducer
+export const {beginConnection,finishConnection,connectionClosed} = wsSlice.actions
+export default wsSlice.reducer

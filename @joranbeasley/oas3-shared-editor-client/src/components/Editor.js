@@ -34,7 +34,7 @@ export function AceEditor({mode, value, theme, onEditor, style, onChange, onSele
     }
   }, [editor_, mode, theme, onEditor,editorSet])
   React.useEffect(() => {
-    if (value !== editor_?.editor?.getValue()) {
+    if (value && value !== editor_?.editor?.getValue()) {
       console.log("Update Value?", value)
       const editor = editor_?.editor
       if (!editor) {

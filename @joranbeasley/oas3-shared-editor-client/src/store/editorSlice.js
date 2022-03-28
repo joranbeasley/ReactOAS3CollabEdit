@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import jsyaml from "js-yaml";
-
+import {reactLocation} from "../App";
 const editorSlice = createSlice({
   name:'editorSlice',
   initialState:{
@@ -12,11 +12,16 @@ const editorSlice = createSlice({
     current_user: null
   },
   reducers:{
-    setUsername(state,payload){
-      state.current_user = payload
+    joinRoom(state,action){
+      const {payload} = action
+      state.current_room = payload.room
+      state.current_user = payload.user
+      state.current_users = [...payload.room.users]
     },
-    joinRoom(state,payload){
-      state.current_room = payload
+    updateRoom(state,action){
+      const {payload} = action
+      state.current_room = payload.room
+      state.current_users = [...payload.room.users]
     },
     setUsers(state,action){
       state.current_users = [...action?.payload]
@@ -32,6 +37,14 @@ const editorSlice = createSlice({
     },
   }
 })
+export function doJoinRoomAndRedirect({room,user}){
+  return async function setRoomThunk(dispatch, getState) {
+    dispatch(editorSlice.actions.joinRoom({room, user}))
+    const uri = `/room/${room.name}/${user.email}`
+    console.log("PUSH TO:",uri)
+    reactLocation.history.push(uri)
+  }
+}
 export function doSetYaml(yaml) {
   // fetchTodoByIdThunk is the "thunk function"
   return async function setYamlThunk(dispatch, getState) {
@@ -46,5 +59,5 @@ export function doSetYaml(yaml) {
     }
   }
 }
-export const {setYaml,setJSON,joinRoom,setUsername,setUsers,setError} = editorSlice.actions
+export const {setYaml,setJSON,joinRoom,updateRoom,setUsers,setError} = editorSlice.actions
 export default editorSlice.reducer

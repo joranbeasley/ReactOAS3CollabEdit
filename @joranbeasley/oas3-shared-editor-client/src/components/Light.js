@@ -1,5 +1,5 @@
 import React from "react";
-export function StatusLight({color,style}){
+export function StatusLight({color,style,title}){
   const colors = {
     'red':['rgb(255,10,10)','rgb(255, 126, 126)'],
     'green':['rgb(0, 107, 27)','rgb(129, 255, 160)'],
@@ -8,6 +8,7 @@ export function StatusLight({color,style}){
   }
   const [start_color,stop_color] = colors[color]
   return (
+    <div title={title}>
     <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" width={15} height={15} style={{...(style||{})}}>
   <defs>
     <linearGradient id="fill_color" >
@@ -29,5 +30,5 @@ export function StatusLight({color,style}){
       <path style={{fill: "url(#gradient-0)"}} transform="matrix(1.179745, -2.12354, 1.757641, 0.976468, -963.087036, 1108.242432)" d="M 584.988 220.369 A 22.653 22.653 0 0 1 584.988 265.631 A 29.94 29.94 0 0 0 584.988 220.369 Z" ></path>
     </g>
   </g>
-</svg>)
+    </svg></div>)
 }

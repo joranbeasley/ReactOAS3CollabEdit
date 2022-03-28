@@ -42,9 +42,14 @@ def filter_symlinks_in_folder(target,folder=".",maxDepth=1):
         if target in realfile:
             yield {"symlink":symlink,"realfile":realfile}
 
+def install_app_cli(args=sys.argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("host_and_port",help="127.0.0.1:9911",)
+    args2 = parser.parse_args(args)
+    install_app(args2.host_and_port)
 
-def install_app(name,host_and_port,**kwargs):
-    print(f"Install websocket server as {name}")
+def install_app(host_and_port,**kwargs):
+    print(f"Install websocket server to run on {host_and_port} for oas3 editor")
     host,port = parse_host_and_port_or_exit(host_and_port)
     base_path = "/etc/ws_service_files"
     socket_path = os.path.join(base_path, "websocket_server@.socket")
@@ -93,11 +98,21 @@ def _parse_host_and_port(host_and_port):
     except:
         raise TypeError(f"Invalid PORT: {port}, expected an integer")
     return host,port
+
+def runserver_cli(args=sys.argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("host_and_port",help="127.0.0.1:9911",)
+    args2 = parser.parse_args(args)
+    return runserver(args2.host_and_port)
+
 def runserver(host_and_port,**kwargs):
     host,port = parse_host_and_port_or_exit(host_and_port)
     print(f"Serving Websocket Server on {host_and_port}")
     from acejs_collab_server.server.ace_server import start_server
     start_server(host,port)
+
+
+
 
 def stop_command(**args):
     print("STOP SERVER:",args)
@@ -167,13 +182,16 @@ def main(args=None):
     logs_cmd.add_argument("-n","--num_lines",type=int,help="how many lines to tail",default=-1)
     logs_cmd.set_defaults(func=logs_command)
 
-    result = parser.parse_args(args or sys.argv)
-    payload = {k:v for k,v in result.__dict__.items() if k != 'func'}
-    result.func(**payload)
+    result = parser.parse_args(args if isinstance(args,(list,tuple)) else sys.argv)
+    if not hasattr(result,'func'):
+        print("Invalid arguments: please see help (-h/--help)")
+    else:
+        payload = {k:v for k,v in result.__dict__.items() if k != 'func'}
+        result.func(**payload)
 
 
 if __name__ == "__main__":
     args = sys.argv
     if len(args) and "__main__" in args[0]:
         args = args[1:]
-    main(['logs','-f','-n','20'])#,args)
+    main(args) # ['logs','-f','-n','20'])#,args)

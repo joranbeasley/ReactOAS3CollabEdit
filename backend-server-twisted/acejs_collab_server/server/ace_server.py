@@ -54,7 +54,7 @@ class GoogleAuthenticatedRoomProtocol(EventDrivenProtocol):
         #     print("Google Error!",e)
         #     traceback.print_exc()
         #     raise AuthenticationException(f"google connection error: {e}")
-        self.user_info = {'email':data1,"room_name":room}
+        self.user_info = {"room_name":room,**data1}
 
         print("Connection Complete")
     def doWebsocketHandshake(self, request):

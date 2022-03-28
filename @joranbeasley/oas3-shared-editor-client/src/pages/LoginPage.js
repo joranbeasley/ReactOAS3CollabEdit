@@ -2,13 +2,6 @@ import React from 'react'
 import "./login-page.css"
 import {LoginForm} from "../components/LoginForm";
 
-
-
-
-
-
-
-
 export function LoginPage({
                             onLoginRequest, onSuccess, // listeners/callbacks
                        // -- OAUTH CREDENTIALS and redirect_uri --
