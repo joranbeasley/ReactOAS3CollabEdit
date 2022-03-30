@@ -3,7 +3,22 @@
 .App {
   text-align: center;
 }
+.tech-stack {
+  padding: 5px;
+  padding-top: 1px;
+  margin-top: 0;
+  border: thin dashed #becade;
+}
+.tech-stack:nth-child(2){
+  /*color: #000;*/
+  border-top: none ;
+  padding-top: 5px;
 
+}
+.tech-label {
+  font-weight: 900;
+  float: left;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

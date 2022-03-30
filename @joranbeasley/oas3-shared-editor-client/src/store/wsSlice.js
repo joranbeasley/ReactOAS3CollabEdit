@@ -1,7 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 // import yamljs from "yamljs"
 import {ws} from "../util/ws";
-import {doJoinRoomAndRedirect, doSetYaml,  updateRoom} from "./editorSlice";
+import {doJoinRoomAndRedirect, doSetYaml, joinRoom, updateRoom} from "./editorSlice";
+import {reactLocation} from "../App";
 
 const wsSlice = createSlice({
   name:'wsSlice',
@@ -30,15 +31,16 @@ const wsSlice = createSlice({
   }
 })
 
-export function wsLogin(url,ws_inst) {
+export function wsLogin(url,ws_inst,onLoginSuccess=({user,room})=>1) {
   // fetchTodoByIdThunk is the "thunk function"
   ws_inst = ws_inst ?? ws
   return async function wsLoginThunk(dispatch, getState) {
     dispatch(beginConnection())
-    ws_inst.once("WELCOME",payload=>{
+    ws_inst.once("WELCOME",async payload=>{
       console.log("GOT WELCOME:",payload)
-      dispatch(doJoinRoomAndRedirect(payload))
+      dispatch(joinRoom(payload))
       dispatch(doSetYaml(payload.room.content))
+      onLoginSuccess({user:payload.user,room:payload.room})
       // dispatch()
     })
     ws_inst.on("USER_JOINED",payload=>{

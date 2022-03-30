@@ -2,6 +2,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {StatusLight} from "./Light";
 import {FaEdit, FaSave} from "react-icons/fa";
+import {reactLocation} from "../App";
 // import {setUsername} from "../store";
 function Bubble({stroke='#FFF',fill='#F00',fontColor='#FFF',
                   fontFamily='"Open Sans", sans-serif',hoverText='no hover text',children}){
@@ -44,7 +45,13 @@ function EditableText({value,onChange,onSave, style, editable=true}){
   return span1
 }
 export function AppBar(props){
-  const {user,room,connecting,connected,users} = useAppBarSelector()
+  let {user,room,connecting,connected,users} = useAppBarSelector()
+  if(!user || !room){
+    console.log("LOCATION:",reactLocation.current)
+    console.log("PROPS:",props)
+    user = {email:'',color:'#F00'}
+    room = {name:''}
+  }
   let color = "black"
   let status_color = connected?'green':connecting?'yellow':"red"
   let status_text = connected?'CONNECTED':connecting?'CONNECTING':'DISCONNECTED'
