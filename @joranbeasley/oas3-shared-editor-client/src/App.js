@@ -25,33 +25,34 @@ const loginSuccess = ({accessToken,room}) => {
 }
 const LoginPageWrapper=(props)=>{
   const nav = useNavigate()
+  const {params: {room:initialRoom}} = useMatch()
+  console.log("Nav GO:",initialRoom)
   const loginSuccess = ({accessToken,room}) => {
       const uri = `ws://localhost:9000/?user=${accessToken}&room=${room}`
+
       store.dispatch(wsLogin(uri,null,async ({user,room})=>{
-        console.log("Login Complete:",user,room)
-        console.log("Use nav:",nav)
-        console.log("to:",`/room/${room.name}/${user.email}`)
+
         await nav({to:`/room/${room.name}/${user.email}`})
-        console.log("Nav Complete!")
     }))
   }
-  return <LoginPage google_client_id={token} onSuccess={loginSuccess}/>
+  return <LoginPage room={initialRoom} google_client_id={token} onSuccess={loginSuccess}/>
 }
 // const LoggedInEditorPage = ({params})
 const loginRoute = {
   path: "/login",
   title: 'Login To a Room',
-  element: <LoginPageWrapper/>
+  element: <LoginPageWrapper />,
 }
+const loginRoute2 = {path:"/login/:room", element:<LoginPageWrapper />}
 function RoomEditorElement(props){
   const {params:{id,username}} = useMatch();
   const {current_user,current_room} = useSelector(state=>(state?.editor ?? {}))
   if(!current_user || !current_room){
     console.log("Not logged in??")
-    return <Navigate to={"/login"}/>
+    return <Navigate to={"/login"} from={`/room/${id}/${username}`}/>
   }else if(current_room.name !== id || current_user.email !== username){
     console.log("Mismatch!",id,username)
-    return <Navigate to={"/login"}/>
+    return <Navigate to={`/${current_room.name}/${current_user.email}`}/>
   }
   document.title = `Room ${props.id}:  ${props.username}`
   return (< EditorPage
@@ -62,6 +63,7 @@ function RoomEditorElement(props){
 const editorRoute = {path: "/room/:id/:username", title: 'Room :id', element: <RoomEditorElement />}
 const editorRoute2 = {path: "/_offline/:room/:user", title: 'offline room :room', element: <EditorPage/>}
 const routes = [
+  loginRoute2,
   loginRoute,
   editorRoute,
   editorRoute2,

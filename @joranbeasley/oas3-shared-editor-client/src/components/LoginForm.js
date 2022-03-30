@@ -4,8 +4,8 @@ import GitHubLogin from "./login_buttons/GithubLogin";
 import {About as AboutApplication} from "./AboutInfo";
 import {useSelector} from "react-redux";
 
-function SimpleLoginForm({onLoginRequest}) {
-  const [creds, setCreds] = React.useState({u: '', p: ''})
+function SimpleLoginForm({onLoginRequest,room}) {
+  const [creds, setCreds] = React.useState({u: room ?? '', p: ''})
   return <div>
     <input value={creds.u} onChange={e => setCreds({p: creds.p, u: e.currentTarget.value})}/>
     <input type={"password"} value={creds.p} onChange={e => setCreds({u: creds.u, p: e.currentTarget.value})}/>
@@ -13,8 +13,8 @@ function SimpleLoginForm({onLoginRequest}) {
   </div>
 }
 
-export function LoginForm({onSuccess, redirect_uri, google_client_id, github_client_id, onLoginRequest}) {
-  const [room, setRoom] = React.useState('')
+export function LoginForm({onSuccess, redirect_uri, google_client_id, github_client_id, onLoginRequest,room}) {
+  const [_room, set_room] = React.useState(room ?? '')
   const connectionError = useSelector(state=>state.ws.connectionError)
   const login_buttons = []
   if(connectionError === "Connection.FAIL"){
@@ -28,24 +28,24 @@ export function LoginForm({onSuccess, redirect_uri, google_client_id, github_cli
                                       redirectUri={redirect_uri}
                                       onSuccess={(r) => {
                                         console.log("GR:", r)
-                                        onSuccess({...r.profileObj, accessToken: r.accessToken, room})
+                                        onSuccess({...r.profileObj, accessToken: r.accessToken, room: _room})
                                       }}/>)
     }
     if (github_client_id && github_client_id.length > 7) {
       login_buttons.push(<GitHubLogin key={"github-btn"} clientId={github_client_id}
                                       redirectUri={redirect_uri}
-                                      onSuccess={r => onSuccess({...r, room})}/>)
+                                      onSuccess={r => onSuccess({...r, room: _room})}/>)
     }
     if (login_buttons.length === 0) {
       login_buttons.push(<SimpleLoginForm key='form-btn' onLoginRequest={(username, password) => {
-        onLoginRequest({username, password, room})
+        onLoginRequest({username, password, room: _room})
       }}/>)
     }
   }
   return <div className={"login"}>
     <h1>Login To a Room Below</h1>
     <h2>A Collaborative OAS3 Editor</h2>
-    <input value={room} placeholder={"enter room name."} onChange={e => setRoom(e.currentTarget.value)}/>
+    <input value={_room} placeholder={"enter room name."} onChange={e => set_room(e.currentTarget.value)}/>
     {login_buttons}
     <AboutApplication/>
   </div>

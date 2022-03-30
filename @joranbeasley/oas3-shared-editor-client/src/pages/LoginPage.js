@@ -8,8 +8,9 @@ export function LoginPage({
                             redirect_uri,
                             google_client_id,
                             github_client_id,
+                            room,
                           }) {
   return <div className={"login-body"}>
-    <LoginForm {...{google_client_id, github_client_id, redirect_uri}} onSuccess={onSuccess}/>
+    <LoginForm {...{google_client_id, github_client_id, redirect_uri, room}} onSuccess={onSuccess}/>
   </div>
 }
