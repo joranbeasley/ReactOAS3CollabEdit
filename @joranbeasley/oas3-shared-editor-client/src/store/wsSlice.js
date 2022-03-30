@@ -1,8 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 // import yamljs from "yamljs"
 import {ws} from "../util/ws";
-import {doJoinRoomAndRedirect, doSetYaml, joinRoom, updateRoom} from "./editorSlice";
-import {reactLocation} from "../App";
+import {doSetYaml, joinRoom, updateRoom} from "./editorSlice";
 
 const wsSlice = createSlice({
   name:'wsSlice',

@@ -5,7 +5,6 @@ import {LoginPage} from "./pages/LoginPage";
 import store, {wsLogin} from "./store";
 import {
   ReactLocation,
-  createHashHistory,
   Navigate,
   Router, useNavigate, useMatch
 } from "@tanstack/react-location";
@@ -13,25 +12,15 @@ import "brace/mode/yaml"
 import "brace/theme/tomorrow_night_eighties"
 import "@convergencelabs/ace-collab-ext/dist/css/ace-collab-ext.css"
 import {useSelector} from "react-redux";
-// const [room, user] = document.location.pathname.substr(1).split("/", 2)
 const token = process.env.REACT_APP_GOOGLE_CLIENT_ID
 export const reactLocation = new ReactLocation();
 
-const loginSuccess = ({accessToken,room}) => {
-  const uri = `ws://localhost:9000/?user=${accessToken}&room=${room}`
-  store.dispatch(wsLogin(uri,null,({user,room})=>{
-    console.log("Login Complete:",user,room)
-  }))
-}
 const LoginPageWrapper=(props)=>{
   const nav = useNavigate()
   const {params: {room:initialRoom}} = useMatch()
-  console.log("Nav GO:",initialRoom)
   const loginSuccess = ({accessToken,room}) => {
       const uri = `ws://localhost:9000/?user=${accessToken}&room=${room}`
-
       store.dispatch(wsLogin(uri,null,async ({user,room})=>{
-
         await nav({to:`/room/${room.name}/${user.email}`})
     }))
   }
