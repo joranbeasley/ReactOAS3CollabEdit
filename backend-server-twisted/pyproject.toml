@@ -16,6 +16,7 @@ importlib-metadata = "^4.11.3"
 
 [tool.poetry.dev-dependencies]
 bumpver = "^2022.1116"
+bumpversion = "^0.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

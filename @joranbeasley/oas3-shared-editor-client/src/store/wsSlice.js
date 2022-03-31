@@ -1,4 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {setUser} from "@sentry/browser";
+
 // import yamljs from "yamljs"
 import {ws} from "../util/ws";
 import {doSetYaml, joinRoom, updateRoom} from "./editorSlice";
@@ -37,6 +39,7 @@ export function wsLogin(url,ws_inst,onLoginSuccess=({user,room})=>1) {
     dispatch(beginConnection())
     ws_inst.once("WELCOME",async payload=>{
       console.log("GOT WELCOME:",payload)
+      setUser({ email: payload.user.email });
       dispatch(joinRoom(payload))
       dispatch(doSetYaml(payload.room.content))
       onLoginSuccess({user:payload.user,room:payload.room})
