@@ -99,10 +99,10 @@ const config = {
   outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'yarn start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: 'yarn start',
+    port: 3000,
+  },
 };
 
 module.exports = config;
