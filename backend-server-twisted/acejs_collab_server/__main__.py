@@ -190,9 +190,8 @@ def main(args=None):
     install_cmd = parsers.add_parser("install",
                                      help="installs the service, enables the service, and starts the service")
     install_cmd.set_defaults(func=install_app)
-    install_cmd.add_argument("-n", "--name", help="service unit name to register", default="websocket_server")
-    install_cmd.add_argument("--host", default="127.0.0.1", help="the interface to serve on")
-    install_cmd.add_argument("--port", default="9090", help="the port to serve on", type=int)
+    install_cmd.add_argument("host_and_port", nargs="?", default="127.0.0.1:9090")
+    install_cmd.add_argument("--sentry_dsn", nargs="?", default=os.environ.get("SENTRY_DSN", ""))
 
     run_cmd = parsers.add_parser("runserver", help="run the websocket server")
     run_cmd.add_argument("host_and_port", nargs="?", default="127.0.0.1:9090")
