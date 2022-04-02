@@ -16,7 +16,7 @@ test.describe('Application', () => {
   test('Should Allow Me to type in the ROOM field', async ({ page }) => {
     // Create 1st todo.
     await page.goto('http://localhost:3000');
-    await page.locator('input').fill("HELLO");
+    await page.locator('input:nth-child(1)').fill("HELLO");
   });
   test('should goto editor page', async ({ page }) => {
     await page.goto("http://localhost:3000/_offline/Room0/User0")
