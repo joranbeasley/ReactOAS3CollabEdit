@@ -190,6 +190,7 @@ def main(args=None):
     install_cmd = parsers.add_parser("install",
                                      help="installs the service, enables the service, and starts the service")
     install_cmd.set_defaults(func=install_app)
+    print("????")
     install_cmd.add_argument("host_and_port", nargs="?", default="127.0.0.1:9090")
     install_cmd.add_argument("--sentry_dsn", nargs="?", default=os.environ.get("SENTRY_DSN", ""))
 
