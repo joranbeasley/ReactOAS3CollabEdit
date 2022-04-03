@@ -26,7 +26,7 @@ jobs:
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
-          app-dir: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client                    
+          app-dir: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client                   
           pkg-manager: yarn
       - run:
           working_directory: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client
