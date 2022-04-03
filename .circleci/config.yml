@@ -23,9 +23,9 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run:
-          working_directory: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client
+          # working_directory: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client
           name: list files?
-          command: ls -la
+          command: ls -la && pwd
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
