@@ -41,15 +41,19 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: Build Project 
           command: |
-            echo asd="" > .env.production
-            echo asd2="" >> .env.production
+            echo ="" > .env.production
+            echo ="" >> .env.production
             cat .env.production
+      - add_ssh_keys:
+          fingerprints:
+            - "b7:35:a6:4e:9b:0d:6d:d4:78:1e:9a:97:2a:66:6b:be"
       - run:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy 
           command: |
-            scp $SSH_USER@$SSH_HOST ./build/  /home/$SSH_USER/ReactOAS3CollabEditor/dist
-            ssh $SSH_USER@$SSH_HOST "bash /home/$SSH_USER/installer.sh"
+             ssh $SSH_USER@$SSH_HOST "/bin/bash pwd && /bin/bash whoami"
+          #  scp $SSH_USER@$SSH_HOST ./build/  /home/$SSH_USER/ReactOAS3CollabEditor/dist
+          #  ssh $SSH_USER@$SSH_HOST "bash /home/$SSH_USER/installer.sh"
           # yarn build
 
 workflows:
