@@ -22,10 +22,6 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run:
-          working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
-          name: list files?
-          command: ls -la && pwd
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
@@ -34,9 +30,21 @@ jobs:
           pkg-manager: yarn
       - run:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
-          name: Run End To End tests
+          name: Run UNIT Tests
           command: echo OK DONE
           #command: yarn e2e
+      - run:
+          working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
+          name: Run End To End(E2E) Tests
+          command: echo OK DONE
+      - run:
+          working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
+          name: Run End To End(E2E) Tests
+          command: |
+            echo asd="" > .env.production
+            echo asd2="" >> .env.production
+            cat .env.production
+          # yarn build
 
 workflows:
   # Below is the definition of your workflow.
