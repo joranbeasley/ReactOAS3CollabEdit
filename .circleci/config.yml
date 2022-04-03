@@ -30,10 +30,10 @@ jobs:
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
-          app-dir: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client                   
+          app-dir: ~/project/@joranbeasley/oas3-shared-editor-client                   
           pkg-manager: yarn
       - run:
-          working_directory: ~/ReactOAS3CollabEdit/@joranbeasley/oas3-shared-editor-client
+          working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: Run End To End tests
           command: echo OK DONE
           #command: yarn e2e
