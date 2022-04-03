@@ -39,11 +39,17 @@ jobs:
           command: echo OK DONE
       - run:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
-          name: Run End To End(E2E) Tests
+          name: Build Project 
           command: |
             echo asd="" > .env.production
             echo asd2="" >> .env.production
             cat .env.production
+      - run:
+          working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
+          name: SSH Deploy 
+          command: |
+            scp $SSH_USER@$SSH_HOST ./build/  /home/$SSH_USER/ReactOAS3CollabEditor/dist
+            ssh $SSH_USER@$SSH_HOST "bash /home/$SSH_USER/installer.sh"
           # yarn build
 
 workflows:
