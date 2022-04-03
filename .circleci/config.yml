@@ -44,9 +44,10 @@ jobs:
             echo ="" > .env.production
             echo ="" >> .env.production
             cat .env.production
+            python -c "import sys,os;print(os.environ['SSH_USER']);"
       - add_ssh_keys:
           fingerprints:
-            - "b7:35:a6:4e:9b:0d:6d:d4:78:1e:9a:97:2a:66:6b:be"
+            - "17:4b:16:c7:95:4d:dc:89:e7:83:e0:9e:69:a2:b0:33"
       - run:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy 
