@@ -52,7 +52,7 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy 
           command: |
-             ssh $SSH_USER@$SSH_HOST "/bin/bash pwd && /bin/bash whoami"
+             ssh $SSH_USER@$SSH_HOST -p $SSH_PORT "/bin/bash pwd && /bin/bash whoami"
           #  scp $SSH_USER@$SSH_HOST ./build/  /home/$SSH_USER/ReactOAS3CollabEditor/dist
           #  ssh $SSH_USER@$SSH_HOST "bash /home/$SSH_USER/installer.sh"
           # yarn build
