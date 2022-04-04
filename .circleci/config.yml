@@ -54,7 +54,7 @@ jobs:
           command: |
              python3 -c "import sys,os;print(list(os.environ['SSH_USER']+'@'+os.environ['SSH_HOST']));"
              ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
-             scp -p $SSH_PORT ./build/*  $SSH_USER@$SSH_HOST:/var/www/html/editor.joranbeasley.net_app/
+             scp -P $SSH_PORT ./build/*  $SSH_USER@$SSH_HOST:/var/www/html/editor.joranbeasley.net_app/
              echo "COPIED DIST FILES: "
              cd ./build && ls -la
           #  ssh $SSH_USER@$SSH_HOST -p $SSH_PORT "pwd && ls -la && whoami"
