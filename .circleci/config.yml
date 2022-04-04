@@ -34,7 +34,7 @@ jobs:
           working_directory: ~/project/backend-server-twisted/
           name: build python package
           command: |
-            ls -la
+            source ./venv/bin/activate
             python3 -m poetry build
             ls -la dist
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
