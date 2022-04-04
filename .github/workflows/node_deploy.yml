@@ -38,20 +38,20 @@ jobs:
       run: printf "REACT_APP_WSS=${{ secrets.WS_HOST }}\nREACT_APP_GOOGLE_CLIENT_ID=${{ secrets.GH_CLIENTID }}\nREACT_APP_SENTRY_DSN="https://1f5d563fd02c4ce88b84aadf6c19824d@o1165515.ingest.sentry.io/6255641"\nSKIP_PREFLIGHT_CHECK=true\n" > ./.env.production
     - name: Run build task
       run: yarn build && cp ./.env.production ./build/.env.production
-    - name: Copy HTML via SSH
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        port: ${{ secrets.REMOTE_PORT }}
-        key: ${{ secrets.REMOTE_KEY }}
-        source: "@joranbeasley/oas3-shared-editor-client/build/*"
-        target: ${{ secrets.REMOTE_TARGET }}
-    - name: Run Post Copy Installer
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        port: ${{ secrets.REMOTE_PORT }}
-        key: ${{ secrets.REMOTE_KEY }}
-        script: ${{ secrets.REMOTE_INSTALLER_COMMAND }}
+#     - name: Copy HTML via SSH
+#       uses: appleboy/scp-action@master
+#       with:
+#         host: ${{ secrets.REMOTE_HOST }}
+#         username: ${{ secrets.REMOTE_USER }}
+#         port: ${{ secrets.REMOTE_PORT }}
+#         key: ${{ secrets.REMOTE_KEY }}
+#         source: "@joranbeasley/oas3-shared-editor-client/build/*"
+#         target: ${{ secrets.REMOTE_TARGET }}
+#     - name: Run Post Copy Installer
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: ${{ secrets.REMOTE_HOST }}
+#         username: ${{ secrets.REMOTE_USER }}
+#         port: ${{ secrets.REMOTE_PORT }}
+#         key: ${{ secrets.REMOTE_KEY }}
+#         script: ${{ secrets.REMOTE_INSTALLER_COMMAND }}
