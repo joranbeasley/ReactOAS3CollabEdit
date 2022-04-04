@@ -30,6 +30,12 @@ jobs:
             source ./venv/bin/activate
             python3 -m pip install poetry
             python3 -m poetry install
+      - run:
+          working_directory: ~/project/backend-server-twisted/
+            name: build pypackage
+            command: |
+              python3 -m poetry build
+              ls -la dist
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build-and-test-node:
 
@@ -90,7 +96,7 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   sample:
     jobs:
-      - build-and-test-node
       - build-and-test-py
+      - build-and-test-node
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
