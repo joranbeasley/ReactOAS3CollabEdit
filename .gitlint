@@ -2,6 +2,7 @@
 # You HAVE to add the rule here to enable it, only configuring (such as below)
 # does NOT enable it.
 contrib=contrib-title-conventional-commits
+# filter out titles that contain invalid rules
 [title-must-not-contain-word]
 words=
 
