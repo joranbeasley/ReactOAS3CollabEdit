@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {setUser} from "@sentry/browser";
 
 // import yamljs from "yamljs"
-import {ws} from "../util/ws";
+import {ws, WSS} from "../util/ws";
 import {doSetYaml, joinRoom, updateRoom} from "./editorSlice";
 
 const wsSlice = createSlice({
@@ -51,6 +51,17 @@ export function wsLogin(url,ws_inst,onLoginSuccess=({user,room})=>1) {
     ws_inst.on("USER_LEFT",payload=>{
       dispatch(updateRoom({room:payload.room}))
     })
+    if(!url.startsWith("ws")){
+      let base = (localStorage.getItem("__debug__") && localStorage.getItem("__WSS__")) || WSS
+      if(base.endsWith("/") && url.startsWith("/")){
+        url = base + url.substring(1)
+      }else if(!base.endsWith("/") && !url.startsWith("/")){
+        url = base + '/' + url
+      }else{
+        url = base + url
+      }
+    }
+    console.log("INIT CONNECTION:",url)
     ws_inst.connect_ws(url).then(()=>{
       console.log("Update Connection OPEN!")
       dispatch(finishConnection())

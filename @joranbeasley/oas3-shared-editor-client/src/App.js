@@ -12,7 +12,6 @@ import "brace/mode/yaml"
 import "brace/theme/tomorrow_night_eighties"
 import "@convergencelabs/ace-collab-ext/dist/css/ace-collab-ext.css"
 import {useSelector} from "react-redux";
-import {WSS} from "./util/ws";
 const token = process.env.REACT_APP_GOOGLE_CLIENT_ID
 export const reactLocation = new ReactLocation();
 
@@ -20,7 +19,7 @@ const LoginPageWrapper=(props)=>{
   const nav = useNavigate()
   const {params: {room:initialRoom}} = useMatch()
   const loginSuccess = ({accessToken,room}) => {
-      const uri = `${WSS}/?user=${accessToken}&room=${room}`
+      const uri = `/?user=${accessToken}&room=${room}`
       store.dispatch(wsLogin(uri,null,async ({user,room})=>{
         await nav({to:`/room/${room.name}/${user.email}`})
     }))
