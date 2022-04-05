@@ -36,6 +36,7 @@ jobs:
           command: |
             source ./venv/bin/activate
             python3 -m poetry build
+            ls -la
       - add_ssh_keys:
           fingerprints:
             - "17:4b:16:c7:95:4d:dc:89:e7:83:e0:9e:69:a2:b0:33"
@@ -43,7 +44,7 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy
           command: |
-            ls
+            ls -la
             ls build
             ls build/*.whl
             python3 -c "import sys,os;print(list(os.environ['SSH_USER']+'@'+os.environ['SSH_HOST']));"
