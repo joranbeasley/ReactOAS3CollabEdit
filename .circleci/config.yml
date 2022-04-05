@@ -47,8 +47,8 @@ jobs:
             ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
             echo "> ssh -p $SSH_PORT $SSH_USER@$SSH_HOST 'mv ~/latest_build/*.whl ~/build_archive || echo no files to move'"            
             ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "mv ~/latest_build/*.whl ~/build_archive || echo no files to move"                        
-            echo "> scp -P $SSH_PORT  ./dist/*.whl  $SSH_USER@$SSH_HOST:~/latest_build/"
-            scp -P $SSH_PORT  ./dist/*.whl  $SSH_USER@$SSH_HOST:~/latest_build/
+            echo "> scp -P $SSH_PORT  ./build/*.whl  $SSH_USER@$SSH_HOST:~/latest_build/"
+            scp -P $SSH_PORT  ./build/*.whl  $SSH_USER@$SSH_HOST:~/latest_build/
             echo "> ssh -p $SSH_PORT $SSH_USER@$SSH_HOST 'source ~/venv/bin/activate && pip install ~/latest_build/*.whl'"
             ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "source ~/venv/bin/activate && pip install ~/latest_build/*.whl"
         
