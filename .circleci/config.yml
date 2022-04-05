@@ -43,6 +43,8 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy
           command: |
+            ls build
+            ls build/*.whl
             python3 -c "import sys,os;print(list(os.environ['SSH_USER']+'@'+os.environ['SSH_HOST']));"
             ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
             echo "> ssh -p $SSH_PORT $SSH_USER@$SSH_HOST 'mv ~/latest_build/*.whl ~/build_archive || echo no files to move'"            
