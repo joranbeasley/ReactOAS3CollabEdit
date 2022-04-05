@@ -43,6 +43,7 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: SSH Deploy
           command: |
+            ls
             ls build
             ls build/*.whl
             python3 -c "import sys,os;print(list(os.environ['SSH_USER']+'@'+os.environ['SSH_HOST']));"
