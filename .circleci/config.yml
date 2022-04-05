@@ -45,9 +45,9 @@ jobs:
           command: |
             python3 -c "import sys,os;print(list(os.environ['SSH_USER']+'@'+os.environ['SSH_HOST']));"
             ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
-            ssh $SSH_USER@$SSH_HOST "mv ~/latest_build/*.whl ~/build_archive"            
+            ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "mv ~/latest_build/*.whl ~/build_archive"            
             scp -P $SSH_PORT  ./dist/*.whl  $SSH_USER@$SSH_HOST:~/latest_build/
-            ssh $SSH_USER@$SSH_HOST "source ~/venv/bin/activate && pip install ~/latest_build/*.whl"
+            ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "source ~/venv/bin/activate && pip install ~/latest_build/*.whl"
         
 
 
