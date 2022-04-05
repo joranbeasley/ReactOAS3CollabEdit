@@ -89,8 +89,9 @@ jobs:
           working_directory: ~/project/@joranbeasley/oas3-shared-editor-client
           name: Build Project
           command: |
-            echo ="" > .env.production
-            echo ="" >> .env.production
+            echo REACT_APP_WSS=$WSS > .env.production
+            echo REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.production
+            echo REACT_APP_SENTRY_DSN=$SENTRY_DSN >> .env.production
             cat .env.production
             yarn build
       - add_ssh_keys:
